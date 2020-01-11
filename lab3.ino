@@ -1,8 +1,8 @@
 #include "buzzer.h"
 #include "button.h"
 
-#define BUZZER_PIN 3
-#define BUTTON_PIN 4
+#define BUZZER_PIN 51
+#define BUTTON_PIN 53
 
 #define NOTE_FS3 185
 #define NOTE_C3  131
@@ -18,6 +18,7 @@ int notes[] = {NOTE_FS3, NOTE_C3};
 double durations[] = {2,2};
 int melodyLength = 2;
 float distance;
+float stayD;
 
 bool alarm = false;
 const float maxDist = 30.0;
@@ -32,7 +33,7 @@ void loop()
   {
     case false:
     distance = readDist();
-    if (distance<maxDist)
+    if (distance<maxDist && abs(distance - stayD)>2)
     {
       buzzer.turnSoundOn();
       alarm = true;
@@ -45,6 +46,7 @@ void loop()
     {
       buzzer.turnSoundOff();
       alarm = false;
+      stayD = distance;
     }
       break;
   }
